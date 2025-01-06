@@ -27,7 +27,7 @@ jobs:
 
     - name: Verify JAR file exists
       run: |
-        if [ ! -f "myapp/target/myapp-*.jar" ]; then
+        if [ ! -f "myapp/target-*.jar" ]; then
           echo "Error: JAR file not found in target directory."
           exit 1
         fi
