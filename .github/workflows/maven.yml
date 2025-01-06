@@ -69,4 +69,9 @@ jobs:
     - name: Push Docker Image to Docker Hub
       run: |
         docker push matan2024/myapp:${{ env.new_version }}
-#aa
+
+    - name: Run Docker Image
+      run: |
+        docker run -d --name myapp-container -p 8080:8080 mydockerhub/myapp:${{ env.new_version }}
+        sleep 5
+        curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)
