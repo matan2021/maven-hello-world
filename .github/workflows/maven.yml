@@ -56,7 +56,7 @@ jobs:
         git add myapp/pom.xml
         git diff --cached --exit-code || (git commit -m "Bump version to ${{ env.new_version }}" && git push)
 
-       - name: Build Docker Image
+    - name: Build Docker Image
       run: |
         echo "Building Docker image with version ${{ env.new_version }}"
         docker build -t matan2024/myapp:${{ env.new_version }} .
