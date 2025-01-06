@@ -50,11 +50,12 @@ jobs:
         git add myapp/pom.xml
         git diff --cached --exit-code || (git commit -m "Bump version to ${{ env.new_version }}" && git push)
     
-    - name: Build with Maven
-      run: |
-        mvn clean install -f myapp/pom.xml
+    
     - name: Build Docker Image
       run: |
         echo "Building Docker image with version ${{ env.new_version }}"
         docker build -t myapp:${{ env.new_version }} ./myapp
         docker tag myapp:${{ env.new_version }} mydockerhub/myapp:${{ env.new_version }}
+    - name: Build with Maven
+      run: |
+        mvn clean install -f myapp/pom.xml
