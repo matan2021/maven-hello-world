@@ -56,11 +56,11 @@ jobs:
         git add myapp/pom.xml
         git diff --cached --exit-code || (git commit -m "Bump version to ${{ env.new_version }}" && git push)
 
-    - name: Build Docker Image
+       - name: Build Docker Image
       run: |
         echo "Building Docker image with version ${{ env.new_version }}"
         docker build -t matan2024/myapp:${{ env.new_version }} .
-        docker tag matan2024/myapp:${{ env.new_version }} mydockerhub/myapp:${{ env.new_version }}
+        docker tag matan2024/myapp:${{ env.new_version }} matan2024/myapp:${{ env.new_version }}
 
     - name: Log in to Docker Hub
       run: |
@@ -72,6 +72,6 @@ jobs:
 
     - name: Run Docker Image
       run: |
-        docker run -d --name myapp-container -p 8080:8080 mydockerhub/myapp:${{ env.new_version }}
-        sleep 5
+        docker run -d --name myapp-container -p 8081:8080 matan2024/myapp:${{ env.new_version }}
+        sleep 10  # הגדל את זמן ההמתנה אם צריך
         curl -f http://localhost:8081 || (echo "App did not start successfully" && exit 1)
