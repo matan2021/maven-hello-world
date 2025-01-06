@@ -46,3 +46,12 @@ jobs:
         mvn -f myapp/pom.xml versions:set -DnewVersion=$NEW_VERSION
         mvn -f myapp/pom.xml versions:commit
 
+    - name: Commit and push updated version
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add myapp/pom.xml
+        git commit -m "Bump version to $NEW_VERSION"
+        git push        
+
+
