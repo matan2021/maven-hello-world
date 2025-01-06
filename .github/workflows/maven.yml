@@ -28,7 +28,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+<<<<<<< HEAD
       run: mvn -B package --myapp/file pom.xml
+=======
+      run: mvn -B package --file myapp/pom.xml
+>>>>>>> fc8e351303ee6ef64ef09f0936ec6022ce4d8f53
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
