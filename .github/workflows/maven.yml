@@ -57,7 +57,3 @@ jobs:
       run: |
         docker build -t myapp:${{ steps.version.outputs.new_version }} .
         docker tag myapp:${{ steps.version.outputs.new_version }} mydockerhub/myapp:${{ steps.version.outputs.new_version }}
-
-   
-
-
