@@ -25,6 +25,14 @@ jobs:
       run: |
         mvn clean install -f myapp/pom.xml
 
+    - name: Verify JAR file exists
+      run: |
+        if [ ! -f "myapp/target/myapp-*.jar" ]; then
+          echo "Error: JAR file not found in target directory."
+          exit 1
+        fi
+      shell: bash
+
     - name: Extract current version
       id: extract-version
       run: |
