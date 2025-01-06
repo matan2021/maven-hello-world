@@ -22,7 +22,9 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn -B package --file myapp/pom.xml
+      run: |
+        mvn clean install -f myapp/pom.xml
+        ls -la target # להדפיס את תוכן תיקיית target אחרי הבנייה
 
     - name: Extract current version
       id: extract-version
@@ -56,5 +58,5 @@ jobs:
     - name: Build Docker Image
       run: |
         echo "Building Docker image with version ${{ env.new_version }}"
-        docker build -t myapp:${{ env.new_version }} .
+        docker build -t myapp:${{ env.new_version }} ./myapp
         docker tag myapp:${{ env.new_version }} mydockerhub/myapp:${{ env.new_version }}
