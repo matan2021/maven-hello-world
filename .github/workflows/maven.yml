@@ -26,8 +26,8 @@ jobs:
       run: mvn -B package --file myapp/pom.xml
 
     - name: Extract current version
-          id: extract-version
-          run: |
-            VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
-            echo "Current version: $VERSION"
-            echo "version=$VERSION" >> $GITHUB_ENV
+      id: extract-version
+      run: |
+        VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "Current version: $VERSION"
+        echo "version=$VERSION" >> $GITHUB_ENV
