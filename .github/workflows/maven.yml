@@ -59,8 +59,8 @@ jobs:
     - name: Build Docker Image
       run: |
         echo "Building Docker image with version ${{ env.new_version }}"
-        docker build -t myapp:${{ env.new_version }} .
-        docker tag myapp:${{ env.new_version }} mydockerhub/myapp:${{ env.new_version }}
+        docker build -t matan2024/myapp:${{ env.new_version }} .
+        docker tag matan2024/myapp:${{ env.new_version }} mydockerhub/myapp:${{ env.new_version }}
 
     - name: Log in to Docker Hub
       run: |
@@ -68,5 +68,5 @@ jobs:
 
     - name: Push Docker Image to Docker Hub
       run: |
-        docker push mydockerhub/myapp:${{ env.new_version }}
+        docker push matan2024/myapp:${{ env.new_version }}
 #aa
