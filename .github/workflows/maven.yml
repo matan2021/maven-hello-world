@@ -49,6 +49,6 @@ jobs:
 
     - name: Run Docker Container Locally
       run: |
-        docker run -d --name myapp-container -p 8081:8080 matan2024/myapp:${{ env.version }}
+        docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.version }}
         sleep 10
-        curl -f http://localhost:8081 || (echo "App did not start successfully" && exit 1)
+        curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)
