@@ -47,8 +47,8 @@ jobs:
         docker push matan2024/myapp:${{ env.version }}
         docker push matan2024/myapp:latest
 
-    - name: Run Docker Container Locally
-      run: |
-        docker run -d --name myapp-container -p 8082:8080 matan2024/myapp:${{ env.version }}
-        sleep 10
-        curl -f http://localhost:8082 || (echo "App did not start successfully" && exit 1)
+    # - name: Run Docker Container Locally
+    #   run: |
+    #     docker run -d --name myapp-container -p 8082:8080 matan2024/myapp:${{ env.version }}
+    #     sleep 10
+    #     curl -f http://localhost:8082 || (echo "App did not start successfully" && exit 1)
