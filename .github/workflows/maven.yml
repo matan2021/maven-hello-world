@@ -48,6 +48,12 @@ jobs:
         NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
         echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
         
+        # Ensure version is valid (no double dots, e.g., ..1)
+        if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Invalid version format: $NEW_VERSION"
+          exit 1
+        fi
+        
         # Update pom.xml with the new version
         mvn versions:set -DnewVersion=$NEW_VERSION -f myapp/pom.xml
         mvn clean install -f myapp/pom.xml
