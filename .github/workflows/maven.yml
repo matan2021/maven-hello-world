@@ -51,29 +51,29 @@ jobs:
         echo "Current version: ${{ env.new_version }}"
 
 
-    # - name: Build Docker Image
-    #   run: |
-    #     echo "Building Docker image with version ${{ env.new_version }}"
-    #     docker build -t matan2024/myapp:${{ env.new_version }} .
-    #     docker tag matan2024/myapp:${{ env.new_version }} matan2024/myapp:latest
+    - name: Build Docker Image
+      run: |
+        echo "Building Docker image with version ${{ env.new_version }}"
+        docker build -t matan2024/myapp:${{ env.new_version }} .
+        docker tag matan2024/myapp:${{ env.new_version }} matan2024/myapp:latest
 
-    # - name: Log in to Docker Hub
-    #   run: |
-    #     echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Log in to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    # - name: Push Docker Image to Docker Hub
-    #   run: |
-    #     set -e
-    #     docker push matan2024/myapp:${{ env.new_version }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.new_version }})
+    - name: Push Docker Image to Docker Hub
+      run: |
+        set -e
+        docker push matan2024/myapp:${{ env.new_version }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.new_version }})
 
-    # - name: Install kubectl
-    #   run: |
-    #     sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    #     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    - name: Install kubectl
+      run: |
+        sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-    # - name: Install Helm
-    #   run: |
-    #     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
     # - name: Deploy with Helm
     #   run: |
