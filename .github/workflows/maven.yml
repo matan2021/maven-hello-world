@@ -35,8 +35,7 @@ jobs:
     - name: Update version (increment patch)
       id: update-version
       run: |
-        # Split the version into x, y, z
-        VERSION_PARTS=(${GITHUB_ENV[current_version]//./ })
+        IFS='.' read -r -a VERSION_PARTS <<< "${GITHUB_ENV[current_version]}"
         MAJOR=${VERSION_PARTS[0]}
         MINOR=${VERSION_PARTS[1]}
         PATCH=${VERSION_PARTS[2]}
