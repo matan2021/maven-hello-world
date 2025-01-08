@@ -47,11 +47,11 @@ jobs:
         set -e
         docker push matan2024/myapp:${{ env.version }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.version }})
 
-    # - name: Run Docker Container Locally
-    #   run: |
-    #     docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.version }}
-    #     sleep 10
-    #     curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
+    - name: Run Docker Container Locally
+      run: |
+        docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.version }}
+        sleep 10
+        curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
 
     - name: Install kubectl
       run: |
