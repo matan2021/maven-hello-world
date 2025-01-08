@@ -36,6 +36,7 @@ jobs:
     - name: Increment patch version
       id: increment-version
       run: |
+        VERSION=${{ env.version }}
         IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
         PATCH=$((PATCH+1))
         NEW_VERSION="$MAJOR.$MINOR.$PATCH"
