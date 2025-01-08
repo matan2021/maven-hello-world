@@ -30,7 +30,7 @@ jobs:
       id: extract-version
       run: |
         VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
-        echo "version=$VERSION" >> $GITHUB_ENV
+        echo "current_version=$VERSION" >> $GITHUB_ENV
 
     - name: Update version (increment patch)
       id: update-version
@@ -50,7 +50,7 @@ jobs:
         
         # Update pom.xml with the new version
         mvn versions:set -DnewVersion=$NEW_VERSION -f myapp/pom.xml
-        mvn clean install -f myapp/pom.xml    
+        mvn clean install -f myapp/pom.xml
 
     - name: Build Docker Image
       run: |
@@ -66,12 +66,6 @@ jobs:
       run: |
         set -e
         docker push matan2024/myapp:${{ env.new_version }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.new_version }})
-
-    # - name: Run Docker Container Locally
-    #   run: |
-    #     docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.version }}
-    #     sleep 10
-    #     curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
 
     - name: Install kubectl
       run: |
