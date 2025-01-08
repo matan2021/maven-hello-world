@@ -43,8 +43,8 @@ jobs:
 
     - name: Update pom.xml with new version
       run: |
-        mvn versions:set -DnewVersion=$NEW_VERSION
-        mvn versions:commit
+        mvn versions:set -DnewVersion=$NEW_VERSION -f myapp/pom.xml
+        mvn versions:commit -f myapp/pom.xml
 
     - name: Build Docker Image
       run: |
