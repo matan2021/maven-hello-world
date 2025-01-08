@@ -32,15 +32,19 @@ jobs:
         VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "current_version=$VERSION" >> $GITHUB_ENV
 
-    - name: Update version (increment patch)
-      id: version
+    - name: Increment patch version
+      id: increment-version
       run: |
-        current_version=$(xmllint --xpath "string(//project/version)" pom.xml)
-        IFS='.' read -r major minor patch <<< "$current_version"
-        new_version="${major}.${minor}.$((patch + 1))"
-        echo "New version: $new_version"
-        sed -i "s|<version>$current_version</version>|<version>$new_version</version>|" pom.xml
-        echo "::set-output name=new_version::$new_version"
+        IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+        PATCH=$((PATCH+1))
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        echo "New version: $NEW_VERSION"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+
+    - name: Update pom.xml with new version
+      run: |
+        mvn versions:set -DnewVersion=$NEW_VERSION
+        mvn versions:commit
 
     - name: Build Docker Image
       run: |
