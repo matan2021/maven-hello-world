@@ -41,6 +41,7 @@ jobs:
         echo "New version: $NEW_VERSION"
         echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
+
     - name: Update pom.xml with new version
       run: |
         mvn versions:set -DnewVersion=$NEW_VERSION -f myapp/pom.xml
