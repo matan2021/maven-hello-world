@@ -64,6 +64,6 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.new_version }}
+        helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.version }}
     
 
