@@ -36,6 +36,10 @@ jobs:
     - name: Increment patch version
       id: increment-version
       run: |
+        if [ -z "$VERSION" ]; then
+        echo "ERROR: VERSION is empty or undefined"
+        exit 1
+        fi
         VERSION=${{ env.version }}
         IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
         PATCH=$((PATCH+1))
@@ -45,8 +49,9 @@ jobs:
 
     - name: Update pom.xml with new version
       run: |
-        mvn versions:set -DnewVersion=$NEW_VERSION -f myapp/pom.xml
+        mvn versions:set -DnewVersion=${{ env.new_version }} -f myapp/pom.xml
         mvn versions:commit -f myapp/pom.xml
+
 
     - name: Validate version format
       run: |
