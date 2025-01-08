@@ -47,6 +47,20 @@ jobs:
         docker push matan2024/myapp:${{ env.version }}
         docker push matan2024/myapp:latest
 
+      - name: Install kubectl
+      run: |
+        sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.new_version }}
+    
+
     # - name: Run Docker Container Locally
     #   run: |
     #     docker run -d --name myapp-container -p 8082:8080 matan2024/myapp:${{ env.version }}
