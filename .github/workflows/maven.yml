@@ -30,13 +30,13 @@ jobs:
       id: extract-version
       run: |
         VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
-        echo "version=$VERSION" >> $GITHUB_ENV
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Build Docker Image
       run: |
-        echo "Building Docker image with version ${{ env.version }}"
-        docker build -t matan2024/myapp:${{ env.version }} .
-        docker tag matan2024/myapp:${{ env.version }} matan2024/myapp:latest
+        echo "Building Docker image with version ${{ env.VERSION }}"
+        docker build -t matan2024/myapp:${{ env.VERSION }} -f myapp/Dockerfile .
+        docker tag matan2024/myapp:${{ env.VERSION }} matan2024/myapp:latest
 
     - name: Log in to Docker Hub
       run: |
@@ -44,14 +44,13 @@ jobs:
 
     - name: Push Docker Image to Docker Hub
       run: |
-        set -e
-        docker push matan2024/myapp:${{ env.version }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.version }})
+        docker push matan2024/myapp:${{ env.VERSION }} || (echo "Retrying push..." && sleep 5 && docker push matan2024/myapp:${{ env.VERSION }})
 
-    # - name: Run Docker Container Locally
-    #   run: |
-    #     docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.version }}
-    #     sleep 10
-    #     curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
+    - name: Run Docker Container Locally
+      run: |
+        docker run -d --name myapp-container -p 8080:8080 matan2024/myapp:${{ env.VERSION }}
+        sleep 10
+        curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)
 
     - name: Install kubectl
       run: |
@@ -64,6 +63,4 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.version }}
-    
-
+        helm upgrade --install myapp ./helm-chart/myapp --set image.tag=${{ env.VERSION }}
