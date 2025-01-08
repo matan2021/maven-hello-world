@@ -54,17 +54,17 @@ jobs:
     #     sleep 10
     #     curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
 
-    - name: Install kubectl
-      run: |
-        sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    # - name: Install kubectl
+    #   run: |
+    #     sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    #     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-    - name: Install Helm
-      run: |
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    # - name: Install Helm
+    #   run: |
+    #     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-    - name: Deploy with Helm
-      run: |
-        helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.new_version }}
+    # - name: Deploy with Helm
+    #   run: |
+    #     helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.new_version }}
     
 
