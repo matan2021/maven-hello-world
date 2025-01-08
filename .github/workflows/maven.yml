@@ -47,6 +47,12 @@ jobs:
         docker push matan2024/myapp:${{ env.version }}
         docker push matan2024/myapp:latest
 
+    - name: Run Docker Container Locally
+      run: |
+        docker run -d --name myapp-container -p 8082:8080 matan2024/myapp:${{ env.version }}
+        sleep 10
+        curl -f http://localhost:8080 || (echo "App did not start successfully" && exit 1)    
+
     - name: Install kubectl
       run: |
         sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -61,8 +67,3 @@ jobs:
         helm upgrade --install myapp helm-chart/myapp --set image.tag=${{ env.new_version }}
     
 
-    # - name: Run Docker Container Locally
-    #   run: |
-    #     docker run -d --name myapp-container -p 8082:8080 matan2024/myapp:${{ env.version }}
-    #     sleep 10
-    #     curl -f http://localhost:8082 || (echo "App did not start successfully" && exit 1)
