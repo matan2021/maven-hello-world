@@ -30,27 +30,38 @@ jobs:
       id: extract-version
       run: |
         VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
+        if [ -z "$VERSION" ]; then
+          echo "ERROR: VERSION is empty or undefined"
+          exit 1
+        fi
         echo "Extracted version: $VERSION"
         echo "current_version=$VERSION" >> $GITHUB_ENV
 
     - name: Increment patch version
       id: increment-version
       run: |
+        VERSION=${{ env.current_version }}
         if [ -z "$VERSION" ]; then
-        echo "ERROR: VERSION is empty or undefined"
-        exit 1
+          echo "ERROR: VERSION is empty or undefined"
+          exit 1
         fi
-        VERSION=${{ env.version }}
+        # Extract MAJOR.MINOR.PATCH
         IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+        if [ -z "$MAJOR" ] || [ -z "$MINOR" ] || [ -z "$PATCH" ]; then
+          echo "ERROR: Version format is invalid ($VERSION)"
+          exit 1
+        fi
         PATCH=$((PATCH+1))
         NEW_VERSION="$MAJOR.$MINOR.$PATCH"
         echo "New version: $NEW_VERSION"
         echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
-    - name: Update pom.xml with new version
+
+    - name: Update POM version
       run: |
-        mvn versions:set -DnewVersion=${{ env.new_version }} -f myapp/pom.xml
-        mvn versions:commit -f myapp/pom.xml
+        mvn -f myapp/pom.xml versions:set -DnewVersion=${{ env.new_version }} -DgenerateBackupPoms=false
+        echo "Updated POM version to ${{ env.new_version }}"
+
 
 
     - name: Validate version format
